@@ -28,21 +28,25 @@ public class Client {
   public static void main(String[] args) throws IOException {
     // 同步的一般就用这种就行
     CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
-    String uri = "http://localhost:30000";
+    String uri = "http://10.42.2.239:8106/sa";
     HttpRequestBase request = doPost(uri);
-    // 这个 response 是需要关闭，如果不设置超时时间，response 会保持 socket 链接等数据
-    try (CloseableHttpResponse response = closeableHttpClient.execute(request)) {
-      if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-        // EntityUtils 用于处理各种 Entity
-        // EntityUtils.consume(entity) 这个也可以用来关闭 response
-        String result = EntityUtils.toString(response.getEntity());
-        System.out.println(result);
-      } else {
-        // do something
-      }
-    } catch (IOException e) {
-      // do something
-      e.printStackTrace();
+    for (int i = 0; i < 10; i++) {
+      new Thread(() -> {
+        // 这个 response 是需要关闭，如果不设置超时时间，response 会保持 socket 链接等数据
+        try (CloseableHttpResponse response = closeableHttpClient.execute(request)) {
+          if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            // EntityUtils 用于处理各种 Entity
+            // EntityUtils.consume(entity) 这个也可以用来关闭 response
+            String result = EntityUtils.toString(response.getEntity());
+            System.out.println(result);
+          } else {
+            // do something
+          }
+        } catch (IOException e) {
+          // do something
+          e.printStackTrace();
+        }
+      }).start();
     }
     // 这也是 Apache client 的一种关闭方法，具体实现不明，Apache client 的 close 真的令人头大
     request.releaseConnection();

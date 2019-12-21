@@ -8,6 +8,8 @@ import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Properties;
 
@@ -41,6 +43,11 @@ public class Consumer {
     Properties properties = initConfig();
     kafkaConsumer = new KafkaConsumer<>(properties);
     kafkaConsumer.subscribe(Collections.singleton(TOPIC_NAME));
+    ArrayList<TopicPartition> list = new ArrayList<>();
+    list.add(new TopicPartition(TOPIC_NAME,0));
+    list.add(new TopicPartition(TOPIC_NAME,1));
+
+    //kafkaConsumer.seekToBeginning(list);
 
     // 手工指定 TopicPartition
     // kafkaConsumer.assign(Collections.singleton(new TopicPartition("topic", 1)));
@@ -62,32 +69,33 @@ public class Consumer {
     });*/
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
     init();
     //AutoCommitOffset();
-    while (true) {
-      ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
+    for (int i = 0; i < 5; i++) {
+      new Thread(() -> {
+        while (true) {
+          ConsumerRecords<String, String> records = poll();
 
-      // Iterator<ConsumerRecord<String, String>> iterator = records.iterator();
-      // Set<TopicPartition> partitions = records.partitions();
-      // Iterable<ConsumerRecord<String, String>> topic = records.records(TOPIC_NAME);
-      // List<ConsumerRecord<String, String>> partitionRecords = records.records(new TopicPartition(TOPIC_NAME, 0));
+          // Iterator<ConsumerRecord<String, String>> iterator = records.iterator();
+          // Set<TopicPartition> partitions = records.partitions();
+          // Iterable<ConsumerRecord<String, String>> topic = records.records(TOPIC_NAME);
+          // List<ConsumerRecord<String, String>> partitionRecords = records.records(new TopicPartition(TOPIC_NAME, 0));
 
-      for (ConsumerRecord<String, String> record : records) {
-        System.out.println("offset: " + record.offset() + " value: " + record.value());
+          for (ConsumerRecord<String, String> record : records) {
+            System.out.println("offset: " + record.offset() + " value: " + record.value());
 
-        // 同步提交每条记录的消费
-        kafkaConsumer.commitSync(Collections.singletonMap(
-            new TopicPartition(record.topic(), record.partition()),
-            new OffsetAndMetadata(record.offset())));
-      }
-      // 异步提交当前 consumer 已消费 offset
-      // kafkaConsumer.commitAsync();
-      if (records.isEmpty()) {
-        kafkaConsumer.close();
-        break;
-      }
+            // 同步提交每条记录的消费
+
+            commit(record);
+          }
+          // 异步提交当前 consumer 已消费 offset
+          // kafkaConsumer.commitAsync();
+        }
+      }).start();
     }
+    Thread.sleep(10000);
+    //kafkaConsumer.close();
   }
 
   private static void AutoCommitOffset() {
@@ -101,6 +109,17 @@ public class Consumer {
         break;
       }
     }
+  }
+
+  private synchronized static ConsumerRecords<String, String> poll() {
+    ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
+    return records;
+  }
+
+  private synchronized static void commit(ConsumerRecord<String, String> record) {
+    kafkaConsumer.commitSync(Collections.singletonMap(
+        new TopicPartition(record.topic(), record.partition()),
+        new OffsetAndMetadata(record.offset())));
   }
 
 }

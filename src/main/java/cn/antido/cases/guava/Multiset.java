@@ -1,4 +1,4 @@
-package cn.antido.cases;
+package cn.antido.cases.guava;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.HashMultiset;
@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Google Guava
+ * Google Multiset
  */
-public class Guava {
+public class Multiset {
   public static void main(String[] args) {
     multiSet();
     multiMap();

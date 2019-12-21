@@ -8,6 +8,16 @@ import java.util.Map;
  */
 public class MapCase {
   public static void main(String[] args) {
+    //sample();
+    Map<Integer, String> map = new HashMap<>();
+    System.out.println(map.get(1111));
+    map.put(2,"c");
+    System.out.println(map.get(12));
+    System.out.println(map.computeIfAbsent(1,k -> "a"));
+    map.forEach((k,v)-> System.out.println(v));
+  }
+
+  private static void sample() {
     Map<Integer, String> map = new HashMap<>();
     for (int i = 0; i < 10; i++) {
       map.put(i, "value-" + i);
@@ -92,6 +102,5 @@ public class MapCase {
      * merge：oldValue、newValue 作为为参数，其它功能于 compute 类似
      * computeIfAbsent：根据 key 匹配，参数为 key , 存在且 value 不为 null，不做修改，为 null 用返回值作为 value，不存在则新增
      * computeIfPresent：key、value 作为参数，匹配到原来的值为 null 不做操作，否则返回值作为新的 value 覆盖，匹配不到不做操作；返回值为 null 删除该节点
-     */
-  }
+     */}
 }
