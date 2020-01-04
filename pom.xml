@@ -7,6 +7,25 @@
     <groupId>cn.antido</groupId>
     <artifactId>training</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <project.encoding>UTF-8</project.encoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.version>5.1.2.RELEASE</spring.version>
+        <cdh.version>5.4.7</cdh.version>
+        <flink.version>1.8.0</flink.version>
+        <jetty.version>9.4.12.v20180830</jetty.version>
+        <jackson.version>2.9.10</jackson.version>
+        <powermock.version>1.7.1</powermock.version>
+        <proguard.phase>none</proguard.phase>
+        <shade.phase>package</shade.phase>
+        <spring-boot.version>2.1.0.RELEASE</spring-boot.version>
+        <jersey-version>2.25.1</jersey-version>
+        <mrunit.version>1.1.0</mrunit.version>
+        <redis.version>2.9.0.v20190128</redis.version>
+        <prometheus.sdk.version>0.8.0</prometheus.sdk.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -23,7 +42,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>19.0</version>
+            <version>13.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -67,16 +86,6 @@
             <version>4.1.4</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka_2.11</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>2.9.8</version>
@@ -106,6 +115,84 @@
             <artifactId>regex</artifactId>
             <version>1.1.9</version>
         </dependency>
+
+        <!-- Hadoop Ecosystem Begin -->
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.4.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-hdfs</artifactId>
+            <version>2.6.0-cdh${cdh.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>2.6.0-cdh${cdh.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-distcp</artifactId>
+            <version>2.6.0-cdh${cdh.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-annotations</artifactId>
+            <version>2.6.0-cdh${cdh.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>2.6.0-cdh${cdh.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-jdbc</artifactId>
+            <version>1.1.0-cdh${cdh.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka_2.11</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-client</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kudu</groupId>
+            <artifactId>kudu-client</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kudu</groupId>
+            <artifactId>kudu-mapreduce</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-mapreduce-client-core</artifactId>
+            <version>2.6.0-cdh${cdh.version}</version>
+        </dependency>
+        <!-- Hadoop Ecosystem End -->
 
     </dependencies>
 
